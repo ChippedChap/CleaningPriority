@@ -127,7 +127,7 @@ namespace CleaningPriority.UserInterface
 			string tooltipString = (isPrioritized) ? "CleaningAreaIsPrioritized".Translate() : "";
 			if (count == 1)
 			{
-				TooltipHandler.TipRegion(rowRect, "OnlyCleaningArea".Translate());
+				tooltipString += "OnlyCleaningArea".Translate();
 			}
 			else if (count > 1)
 			{

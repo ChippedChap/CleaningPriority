@@ -51,6 +51,7 @@ namespace CleaningPriority
 
 		public ListerFilthPrioritized_MapComponent(Map map) : base(map)
 		{
+			EnsureHasArea();
 		}
 
 		public override void ExposeData()
@@ -214,7 +215,7 @@ namespace CleaningPriority
 			{
 				filthDictionary.Remove(deletedArea);
 				priorityList.Remove(deletedArea);
-				if (!priorityList.Any()) priorityList.Add(map.areaManager.Home);
+				EnsureHasArea();
 			}
 			needToUpdatePrioritized = true;
 			needToUpdateAddables = true;
