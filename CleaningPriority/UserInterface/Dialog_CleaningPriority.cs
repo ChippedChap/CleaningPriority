@@ -24,6 +24,7 @@ namespace CleaningPriority.UserInterface
 		{
 			map = currentMap;
 			doCloseX = true;
+			forcePause = true;
 			closeOnClickedOutside = true;
 			absorbInputAroundWindow = true;
 		}

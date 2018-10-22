@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System;
+using Verse;
 
 namespace CleaningPriority
 {
@@ -6,7 +7,13 @@ namespace CleaningPriority
 	{
 		public static ListerFilthPrioritized_MapComponent GetPrioritizedFilthLister(this Map map)
 		{
-			return map.GetComponent<ListerFilthPrioritized_MapComponent>();
+			var prioritizedLister = map.GetComponent<ListerFilthPrioritized_MapComponent>();
+			if (prioritizedLister == null)
+			{
+				prioritizedLister = new ListerFilthPrioritized_MapComponent(map);
+				map.components.Add(prioritizedLister);
+			}
+			return prioritizedLister;
 		}
 	}
 }
