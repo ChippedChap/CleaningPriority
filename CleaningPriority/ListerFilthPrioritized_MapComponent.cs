@@ -51,13 +51,18 @@ namespace CleaningPriority
 
 		public ListerFilthPrioritized_MapComponent(Map map) : base(map)
 		{
-			EnsureHasArea();
 		}
 
 		public override void ExposeData()
 		{
 			Scribe_Collections.Look(ref priorityList, "cleaningPriority", LookMode.Reference);
-			EnsureHasArea();
+			EnsureHasAtLeastOneArea();
+		}
+
+		public override void FinalizeInit()
+		{
+			RegenerateDictionary();
+			EnsureHasAtLeastOneArea();
 		}
 
 		public override void MapComponentOnGUI()
@@ -98,7 +103,7 @@ namespace CleaningPriority
 		public void RemoveAreaRange(IEnumerable<Area> rangeToRemove)
 		{
 			priorityList.RemoveAll(x => rangeToRemove.Contains(x));
-			EnsureHasArea();
+			EnsureHasAtLeastOneArea();
 			needToUpdatePrioritized = true;
 			needToUpdateAddables = true;
 		}
@@ -141,24 +146,12 @@ namespace CleaningPriority
 			return filthListWithoutDuplicates;
 		}
 
-		public void RegenerateDictionary()
-		{
-			foreach (IntVec3 c in map.AllCells)
-			{
-				for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
-				{
-					if (map.areaManager.AllAreas[i][c]) OnAreaChange(c, true, map.areaManager.AllAreas[i]);
-				}
-			}
-		}
-
 		public void OnFilthSpawned(Filth spawned)
 		{
 			for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
 			{
 				Area area = map.areaManager.AllAreas[i];
 				if (excludedTypes.Contains(area.GetType())) continue;
-				EnsureAreaHasKey(area);
 				if (area is Area_Home)
 				{
 					filthDictionary[area] = map.listerFilthInHomeArea.FilthInHomeArea;
@@ -177,7 +170,6 @@ namespace CleaningPriority
 			{
 				Area area = map.areaManager.AllAreas[i];
 				if (excludedTypes.Contains(area.GetType())) continue;
-				EnsureAreaHasKey(area);
 				if (area is Area_Home)
 				{
 					filthDictionary[area] = map.listerFilthInHomeArea.FilthInHomeArea;
@@ -194,7 +186,6 @@ namespace CleaningPriority
 		{
 			if (!excludedTypes.Contains(area.GetType()))
 			{
-				EnsureAreaHasKey(area);
 				List<Thing> thingsInCell = cell.GetThingList(map);
 				if (newVal)
 				{
@@ -215,14 +206,15 @@ namespace CleaningPriority
 			{
 				filthDictionary.Remove(deletedArea);
 				priorityList.Remove(deletedArea);
-				EnsureHasArea();
+				EnsureHasAtLeastOneArea();
 			}
 			needToUpdatePrioritized = true;
 			needToUpdateAddables = true;
 		}
 
-		public void OnAreaAdded()
+		public void OnAreaAdded(Area area)
 		{
+			EnsureAreaHasKey(area);
 			needToUpdateAddables = true;
 		}
 
@@ -231,7 +223,12 @@ namespace CleaningPriority
 			if (!filthDictionary.ContainsKey(area)) filthDictionary[area] = new List<Thing>();
 		}
 
-		private void EnsureHasArea()
+		private void EnsureAllAreasHaveKeys()
+		{
+			for (int i = 0; i < map.areaManager.AllAreas.Count; i++) EnsureAreaHasKey(map.areaManager.AllAreas[i]);
+		}
+
+		private void EnsureHasAtLeastOneArea()
 		{
 			if (!priorityList.Any()) priorityList.Add(map.areaManager.Home);
 		}
@@ -241,7 +238,6 @@ namespace CleaningPriority
 			prioritizedArea = priorityList[priorityList.Count - 1];
 			for (int i = 0; i < priorityList.Count; i++)
 			{
-				EnsureAreaHasKey(priorityList[i]);
 				for (int j = 0; j < filthDictionary[priorityList[i]].Count; j++)
 				{
 					Filth currentFilth = (Filth)filthDictionary[priorityList[i]][j];
@@ -251,6 +247,21 @@ namespace CleaningPriority
 						needToUpdatePrioritized = false;
 						return;
 					}
+				}
+			}
+		}
+
+		private void RegenerateDictionary()
+		{
+			EnsureAllAreasHaveKeys();
+			needToUpdateAddables = true;
+			needToUpdatePrioritized = true;
+			foreach (IntVec3 c in map.AllCells)
+			{
+				for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
+				{
+					EnsureAreaHasKey(map.areaManager.AllAreas[i]);
+					if (map.areaManager.AllAreas[i][c]) OnAreaChange(c, true, map.areaManager.AllAreas[i]);
 				}
 			}
 		}

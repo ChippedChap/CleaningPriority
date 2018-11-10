@@ -78,7 +78,6 @@ namespace CleaningPriority
 					}
 				}
 			}
-
 			if (job.targetQueueA != null && job.targetQueueA.Count >= 5)
 			{
 				job.targetQueueA.SortBy((LocalTargetInfo targ) => targ.Cell.DistanceToSquared(pawn.Position));

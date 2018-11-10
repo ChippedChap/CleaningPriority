@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using RimWorld;
 using Verse;
 
 namespace CleaningPriority.ListerFilthPrioritizedNotifiers
@@ -7,9 +8,9 @@ namespace CleaningPriority.ListerFilthPrioritizedNotifiers
 	[HarmonyPatch("TryMakeNewAllowed")]
 	class AreaAdded
 	{
-		static void Postfix(Map ___map, bool __result)
+		static void Postfix(Map ___map, bool __result, Area_Allowed area)
 		{
-			if (__result) ___map.GetPrioritizedFilthLister().OnAreaAdded();
+			if (__result) ___map.GetPrioritizedFilthLister().OnAreaAdded(area);
 		}
 	}
 }

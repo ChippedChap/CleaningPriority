@@ -58,7 +58,6 @@
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaRemoved.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthDespawned.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthSpawned.cs" />
-    <Compile Include="ListerFilthPrioritizedNotifiers\ShouldRebuild.cs" />
     <Compile Include="ListerFilthPrioritized_MapComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInterface\TextureLoader.cs" />
