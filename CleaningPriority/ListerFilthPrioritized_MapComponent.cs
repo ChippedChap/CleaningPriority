@@ -56,6 +56,7 @@ namespace CleaningPriority
 		public override void ExposeData()
 		{
 			Scribe_Collections.Look(ref priorityList, "cleaningPriority", LookMode.Reference);
+			RemoveNullsInList();
 			EnsureHasAtLeastOneArea();
 		}
 
@@ -216,6 +217,11 @@ namespace CleaningPriority
 		{
 			EnsureAreaHasKey(area);
 			needToUpdateAddables = true;
+		}
+
+		private void RemoveNullsInList()
+		{
+			priorityList.RemoveAll(x => x == null);
 		}
 
 		private void EnsureAreaHasKey(Area area)
