@@ -18,9 +18,6 @@ namespace CleaningPriority
 
 		private ListerFilthInAreas_MapComponent areaFilthLister;
 
-		[TweakValue("CleaningPriority")]
-		public static bool DrawPriorities = false;
-
 		public int AreaCount => priorityList.Count;
 
 		public Area this[int index] => priorityList[index];
