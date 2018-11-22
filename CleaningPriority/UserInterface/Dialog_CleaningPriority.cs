@@ -95,7 +95,6 @@ namespace CleaningPriority.UserInterface
 
 			if (Mouse.IsOver(rowRect))
 			{
-				areaToList.MarkForDraw();
 				GUI.color = areaToList.Color;
 				Widgets.DrawHighlightIfMouseover(rowRect);
 				GUI.color = Color.white;

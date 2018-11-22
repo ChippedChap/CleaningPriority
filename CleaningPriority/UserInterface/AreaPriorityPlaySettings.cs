@@ -17,6 +17,7 @@ namespace CleaningPriority.UserInterface
 			if (worldView) return;
 			Rect mouseOverRect = new Rect(row.FinalX - WidgetRow.IconSize, row.FinalY, WidgetRow.IconSize, WidgetRow.IconSize);
 			MouseoverSounds.DoRegion(mouseOverRect, SoundDefOf.Mouseover_ButtonToggle);
+			if (Mouse.IsOver(mouseOverRect)) Find.CurrentMap.GetCleaningManager().MarkAllForDraw();
 			if (row.ButtonIcon(TextureLoader.priorityWindowButton, "OpenCleaningPriorityDialog".Translate()))
 			{
 				if (!Find.WindowStack.IsOpen<Dialog_CleaningPriority>())

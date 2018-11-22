@@ -6,7 +6,7 @@ using Verse;
 
 namespace CleaningPriority
 {
-	class CleaningManager_MapComponent : MapComponent
+	class CleaningManager_MapComponent : MapComponent, ICellBoolGiver
 	{
 		private List<Area> priorityList = new List<Area>();
 
@@ -17,6 +17,7 @@ namespace CleaningPriority
 		private bool needToUpdatePrioritized = true;
 
 		private ListerFilthInAreas_MapComponent areaFilthLister;
+		private CellBoolDrawer priorityAreasDrawer;
 
 		public int AreaCount => priorityList.Count;
 
@@ -46,6 +47,8 @@ namespace CleaningPriority
 			}
 		}
 
+		public Color Color => Color.white;
+
 		public CleaningManager_MapComponent(Map map) : base(map)
 		{
 		}
@@ -61,6 +64,12 @@ namespace CleaningPriority
 		{
 			EnsureHasAtLeastOneArea();
 			areaFilthLister = map.GetListerFilthInAreas();
+			priorityAreasDrawer = new CellBoolDrawer(this, map.Size.x, map.Size.z);
+		}
+
+		public override void MapComponentUpdate()
+		{
+			priorityAreasDrawer.CellBoolDrawerUpdate();
 		}
 
 		public IEnumerable<Thing> FilthInCleaningAreas()
@@ -101,10 +110,8 @@ namespace CleaningPriority
 
 		public void MarkAllForDraw()
 		{
-			for (int i = 0; i < priorityList.Count; i++)
-			{
-				priorityList[i].MarkForDraw();
-			}
+			if (needToUpdatePrioritized) priorityAreasDrawer.SetDirty();
+			priorityAreasDrawer.MarkForDraw();
 		}
 
 		public bool FilthIsInCleaningArea(Filth filth)
@@ -142,6 +149,25 @@ namespace CleaningPriority
 		public void OnAreaAdded()
 		{
 			needToUpdateAddables = true;
+		}
+
+		public bool GetCellBool(int index)
+		{
+			for (int i = 0; i < priorityList.Count; i++)
+			{
+				if (priorityList[i][index]) return true;
+			}
+			return false;
+		}
+
+		public Color GetCellExtraColor(int index)
+		{
+			for (int i = 0; i < priorityList.Count; i++)
+			{
+				Log.Message(priorityList[i].Label);
+				if (priorityList[i][index]) return priorityList[i].Color;
+			}
+			return Color.clear;
 		}
 
 		private void RemoveNullsInList()
