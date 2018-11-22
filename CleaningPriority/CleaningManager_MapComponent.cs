@@ -164,7 +164,6 @@ namespace CleaningPriority
 		{
 			for (int i = 0; i < priorityList.Count; i++)
 			{
-				Log.Message(priorityList[i].Label);
 				if (priorityList[i][index]) return priorityList[i].Color;
 			}
 			return Color.clear;
