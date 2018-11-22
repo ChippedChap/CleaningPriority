@@ -9,7 +9,8 @@ namespace CleaningPriority.ListerFilthPrioritizedNotifiers
 	{
 		static void Postfix(Map ___map, Area area)
 		{
-			___map.GetComponent<ListerFilthPrioritized_MapComponent>().OnAreaDeleted(area);
+			___map.GetComponent<ListerFilthInAreas_MapComponent>().OnAreaDeleted(area);
+			___map.GetComponent<CleaningManager_MapComponent>().OnAreaDeleted(area);
 		}
 	}
 }

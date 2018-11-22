@@ -31,32 +31,32 @@ namespace CleaningPriority.UserInterface
 
 		public override void DoWindowContents(Rect inRect)
 		{
-			var filthLister = map.GetPrioritizedFilthLister();
-			filthLister.MarkAllForDraw();
+			var manager = map.GetCleaningManager();
+			manager.MarkAllForDraw();
 			if (addQueue.Any())
 			{
-				filthLister.AddAreaRange(addQueue);
+				manager.AddAreaRange(addQueue);
 				addQueue.Clear();
 			}
 			if (removeQueue.Any())
 			{
-				filthLister.RemoveAreaRange(removeQueue);
+				manager.RemoveAreaRange(removeQueue);
 				removeQueue.Clear();
 			}
-			int reorderableGroup = ReorderableWidget.NewGroup(filthLister.ReorderPriorities, ReorderableDirection.Vertical, marginBetweenElements);
-			IEnumerable<Area> addables = filthLister.AddableAreas;
+			int reorderableGroup = ReorderableWidget.NewGroup(manager.ReorderPriorities, ReorderableDirection.Vertical, marginBetweenElements);
+			IEnumerable<Area> addables = manager.AddableAreas;
 			bool playerCanAdd = addables.Any();
-			Rect listRect = new Rect(0f, 0f, inRect.width - 20f, (filthLister.AreaCount + 1) * (elementHeight + 2 * marginBetweenElements) + 100f);
+			Rect listRect = new Rect(0f, 0f, inRect.width - 20f, (manager.AreaCount + 1) * (elementHeight + 2 * marginBetweenElements) + 100f);
 			Rect listHolder = new Rect(inRect.x, inRect.y, inRect.width, (playerCanAdd) ? inRect.height - marginBetweenElements - buttonHeight : inRect.height);
 			Widgets.BeginScrollView(listHolder, ref scrollPos, listRect);
 			Listing_Standard uiLister = new Listing_Standard();
 			uiLister.Begin(listRect);
 			uiLister.ColumnWidth = listRect.width;
 			uiLister.Gap(marginBetweenElements);
-			for (int i = 0; i < filthLister.AreaCount; i++)
+			for (int i = 0; i < manager.AreaCount; i++)
 			{
-				bool areaIsPriority = filthLister.PrioritizedArea == filthLister[i];
-				DoAreaRow(filthLister[i], uiLister, reorderableGroup, filthLister.AreaCount, i, areaIsPriority);
+				bool areaIsPriority = manager.PrioritizedArea == manager[i];
+				DoAreaRow(manager[i], uiLister, reorderableGroup, manager.AreaCount, i, areaIsPriority);
 				uiLister.Gap(marginBetweenElements);
 			}
 			uiLister.End();
@@ -70,17 +70,16 @@ namespace CleaningPriority.UserInterface
 			TooltipHandler.TipRegion(buttonRect, "AddAreaForPriorityCleaningTip".Translate());
 			if (Widgets.ButtonText(buttonRect, "AddAreaForPriorityCleaning".Translate()))
 			{
-				FloatMenu menu = MakeAreasFloatMenu(addableAreas, ListerFilthPrioritized_MapComponent.excludedTypes);
+				FloatMenu menu = MakeAreasFloatMenu(addableAreas);
 				if (menu != null) Find.WindowStack.Add(menu);
 			}
 		}
 
-		private FloatMenu MakeAreasFloatMenu(IEnumerable<Area> addableAreas, HashSet<Type> excludedTypes)
+		private FloatMenu MakeAreasFloatMenu(IEnumerable<Area> addableAreas)
 		{
 			List<FloatMenuOption> options = new List<FloatMenuOption>();
 			foreach (Area area in addableAreas)
 			{
-				if (excludedTypes.Contains(area.GetType())) continue;
 				options.Add(new FloatMenuOption(area.Label, delegate ()
 				{
 					addQueue.Add(area);
@@ -142,8 +141,8 @@ namespace CleaningPriority.UserInterface
 				}
 				else
 				{
-					var filthLister = map.GetPrioritizedFilthLister();
-					tooltipString += "CleaningAreaMiddle".Translate(filthLister[priority - 1].Label, filthLister[priority + 1].Label);
+					var manager = map.GetCleaningManager();
+					tooltipString += "CleaningAreaMiddle".Translate(manager[priority - 1].Label, manager[priority + 1].Label);
 				}
 			}
 			TooltipHandler.TipRegion(rowRect, tooltipString);

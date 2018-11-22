@@ -35,14 +35,14 @@ namespace CleaningPriority
 
 		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
 		{
-			return pawn.Map.GetPrioritizedFilthLister().FilthInCleaningAreas();
+			return pawn.Map.GetCleaningManager().FilthInCleaningAreas();
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			Filth filth = t as Filth;
 			if (pawn.Faction == Faction.OfPlayer && filth != null
-				&& (pawn.Map.GetPrioritizedFilthLister().PrioritizedArea[filth.Position] || (forced && pawn.Map.GetPrioritizedFilthLister().FilthIsInCleaningArea(filth))))
+				&& (pawn.Map.GetCleaningManager().PrioritizedArea[filth.Position] || (forced && pawn.Map.GetCleaningManager().FilthIsInCleaningArea(filth))))
 			{
 				LocalTargetInfo target = t;
 				return pawn.CanReserve(target, 1, -1, null, forced) && filth.TicksSinceThickened >= MinTicksSinceThickened;

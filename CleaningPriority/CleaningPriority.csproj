@@ -53,12 +53,13 @@
     <Compile Include="CleaningPriorityInitialization.cs" />
     <Compile Include="GetMapComponentShorthand.cs" />
     <Compile Include="JobDriver_CleanPrioritizedFilth.cs" />
+    <Compile Include="ListerFilthInAreas_MapComponent.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaAdded.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaChange.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaRemoved.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthDespawned.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthSpawned.cs" />
-    <Compile Include="ListerFilthPrioritized_MapComponent.cs" />
+    <Compile Include="CleaningManager_MapComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInterface\TextureLoader.cs" />
     <Compile Include="UserInterface\AreaPriorityPlaySettings.cs" />
