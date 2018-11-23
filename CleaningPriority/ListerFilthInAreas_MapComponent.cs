@@ -39,9 +39,8 @@ namespace CleaningPriority
 
 		public void OnFilthSpawned(Filth spawned)
 		{	
-			for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
+			foreach (Area area in filthDictionary.Keys.ToList())
 			{
-				Area area = map.areaManager.AllAreas[i];
 				if (area is Area_Home)
 				{
 					filthDictionary[area] = map.listerFilthInHomeArea.FilthInHomeArea;
@@ -55,9 +54,8 @@ namespace CleaningPriority
 
 		public void OnFilthDespawned(Filth despawned)
 		{
-			for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
+			foreach (Area area in filthDictionary.Keys.ToList())
 			{
-				Area area = map.areaManager.AllAreas[i];
 				if (area is Area_Home)
 				{
 					filthDictionary[area] = map.listerFilthInHomeArea.FilthInHomeArea;
@@ -97,9 +95,9 @@ namespace CleaningPriority
 		{
 			foreach (IntVec3 cell in map.AllCells)
 			{
-				for (int i = 0; i < map.areaManager.AllAreas.Count; i++)
+				foreach (Area area in filthDictionary.Keys)
 				{
-					OnAreaChange(cell, true, map.areaManager.AllAreas[i]);
+					OnAreaChange(cell, true, area);
 				}
 			}
 		}

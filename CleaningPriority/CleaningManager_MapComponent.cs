@@ -29,7 +29,11 @@ namespace CleaningPriority
 		{
 			get
 			{
-				if (needToUpdatePrioritized) ReacalculatePriorityArea();
+				if (needToUpdatePrioritized)
+				{
+					ReacalculatePriorityArea();
+					needToUpdatePrioritized = false;
+				}
 				return prioritizedArea;
 			}
 		}
@@ -42,6 +46,7 @@ namespace CleaningPriority
 				{
 					addableAreas = map.areaManager.AllAreas.ToList();
 					addableAreas.RemoveAll(x => priorityList.Contains(x));
+					needToUpdateAddables = false;
 				}
 				return addableAreas;
 			}
@@ -187,10 +192,9 @@ namespace CleaningPriority
 			{
 				foreach (Filth currentFilth in map.GetListerFilthInAreas()[priorityList[i]])
 				{
-					if (currentFilth.TicksSinceThickened >= WorkGiver_CleanFilthPrioritized.MinTicksSinceThickened)
+					if (!currentFilth.DestroyedOrNull() && currentFilth.TicksSinceThickened >= WorkGiver_CleanFilthPrioritized.MinTicksSinceThickened)
 					{
 						prioritizedArea = priorityList[i];
-						needToUpdatePrioritized = false;
 						return;
 					}
 				}
