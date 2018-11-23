@@ -42,7 +42,7 @@ namespace CleaningPriority
 		{
 			Filth filth = t as Filth;
 			if (pawn.Faction == Faction.OfPlayer && filth != null
-				&& (pawn.Map.GetCleaningManager().PrioritizedArea[filth.Position] || (forced && pawn.Map.GetCleaningManager().FilthIsInCleaningArea(filth))))
+				&& (pawn.Map.GetCleaningManager().FilthIsInPriorityAreaSafe(filth) || (forced && pawn.Map.GetCleaningManager().FilthIsInCleaningArea(filth))))
 			{
 				LocalTargetInfo target = t;
 				return pawn.CanReserve(target, 1, -1, null, forced) && filth.TicksSinceThickened >= MinTicksSinceThickened;

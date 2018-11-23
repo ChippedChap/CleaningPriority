@@ -77,6 +77,11 @@ namespace CleaningPriority
 			priorityAreasDrawer.CellBoolDrawerUpdate();
 		}
 
+		public bool FilthIsInPriorityAreaSafe(Filth filth)
+		{
+			return (PrioritizedArea != null) && (PrioritizedArea[filth.Position]);
+		}
+
 		public IEnumerable<Thing> FilthInCleaningAreas()
 		{
 			HashSet<Thing> hashSet = new HashSet<Thing>();
@@ -186,7 +191,7 @@ namespace CleaningPriority
 
 		private void ReacalculatePriorityArea()
 		{
-			prioritizedArea = priorityList[priorityList.Count - 1];
+			prioritizedArea = null;
 			ListerFilthInAreas_MapComponent filthLister = map.GetListerFilthInAreas();
 			for (int i = 0; i < priorityList.Count; i++)
 			{
