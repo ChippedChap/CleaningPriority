@@ -161,6 +161,11 @@ namespace CleaningPriority
 			needToUpdateAddables = true;
 		}
 
+		public void MarkNeedToUpdate()
+		{
+			needToUpdatePrioritized = true;
+		}
+
 		public bool GetCellBool(int index)
 		{
 			for (int i = 0; i < priorityList.Count; i++)

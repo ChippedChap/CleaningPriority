@@ -56,6 +56,7 @@
     <Compile Include="ListerFilthInAreas_MapComponent.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaAdded.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaChange.cs" />
+    <Compile Include="ListerFilthPrioritizedNotifiers\AreaInverted.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\AreaRemoved.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthDespawned.cs" />
     <Compile Include="ListerFilthPrioritizedNotifiers\FilthSpawned.cs" />
