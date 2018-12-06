@@ -46,7 +46,7 @@ namespace CleaningPriority.UserInterface
 			int reorderableGroup = ReorderableWidget.NewGroup(manager.ReorderPriorities, ReorderableDirection.Vertical, marginBetweenElements);
 			IEnumerable<Area> addables = manager.AddableAreas;
 			bool playerCanAdd = addables.Any();
-			Rect listRect = new Rect(0f, 0f, inRect.width - 20f, (manager.AreaCount + 1) * (elementHeight + 2 * marginBetweenElements) + 100f);
+			Rect listRect = new Rect(0f, 0f, inRect.width - 20f, manager.AreaCount * (elementHeight + marginBetweenElements));
 			Rect listHolder = new Rect(inRect.x, inRect.y, inRect.width, (playerCanAdd) ? inRect.height - marginBetweenElements - buttonHeight : inRect.height);
 			Widgets.BeginScrollView(listHolder, ref scrollPos, listRect);
 			Listing_Standard uiLister = new Listing_Standard();
