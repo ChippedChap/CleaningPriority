@@ -56,6 +56,7 @@ namespace CleaningPriority
 
 		public CleaningManager_MapComponent(Map map) : base(map)
 		{
+			priorityAreasDrawer = new CellBoolDrawer(this, map.Size.x, map.Size.z);
 		}
 
 		public override void ExposeData()
@@ -69,7 +70,6 @@ namespace CleaningPriority
 		{
 			EnsureHasAtLeastOneArea();
 			areaFilthLister = map.GetListerFilthInAreas();
-			priorityAreasDrawer = new CellBoolDrawer(this, map.Size.x, map.Size.z);
 		}
 
 		public override void MapComponentUpdate()
@@ -142,12 +142,12 @@ namespace CleaningPriority
 
 		public void MarkNeedToRecalculate()
 		{
+			priorityAreasDrawer.SetDirty();
 			needToUpdatePrioritized = true;
 		}
 
 		public void MarkAllForDraw()
 		{
-			if (needToUpdatePrioritized) priorityAreasDrawer.SetDirty();
 			priorityAreasDrawer.MarkForDraw();
 		}
 
