@@ -97,7 +97,7 @@ namespace CleaningPriority
 
 		public void AddAreaRange(IEnumerable<Area> rangeToAdd)
 		{
-			priorityList.AddRange(rangeToAdd);
+			foreach (Area area in rangeToAdd) priorityList.Insert(0, area);
 			MarkNeedToRecalculate();
 			MarkAddablesOutdated();
 		}
