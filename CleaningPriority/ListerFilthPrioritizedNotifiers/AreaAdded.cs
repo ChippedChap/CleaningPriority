@@ -13,7 +13,7 @@ namespace CleaningPriority.ListerFilthPrioritizedNotifiers
 			if (__result)
 			{
 				___map.GetListerFilthInAreas().EnsureAreaHasKey(area);
-				___map.GetCleaningManager().OnAreaAdded();
+				___map.GetCleaningManager().MarkAddablesOutdated();
 			}
 		}
 	}

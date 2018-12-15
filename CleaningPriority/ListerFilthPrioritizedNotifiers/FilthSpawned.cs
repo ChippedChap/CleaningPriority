@@ -11,7 +11,7 @@ namespace CleaningPriority.ListerFilthPrioritizedNotifiers
 		static void Postfix(Map ___map, Filth f)
 		{
 			___map.GetComponent<ListerFilthInAreas_MapComponent>().OnFilthSpawned(f);
-			___map.GetComponent<CleaningManager_MapComponent>().OnFilthSpawned(f);
+			___map.GetComponent<CleaningManager_MapComponent>().MarkNeedToRecalculate();
 		}
 	}
 }

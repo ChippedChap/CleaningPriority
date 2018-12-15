@@ -98,16 +98,16 @@ namespace CleaningPriority
 		public void AddAreaRange(IEnumerable<Area> rangeToAdd)
 		{
 			priorityList.AddRange(rangeToAdd);
-			needToUpdatePrioritized = true;
-			needToUpdateAddables = true;
+			MarkNeedToRecalculate();
+			MarkAddablesOutdated();
 		}
 
 		public void RemoveAreaRange(IEnumerable<Area> rangeToRemove)
 		{
 			priorityList.RemoveAll(x => rangeToRemove.Contains(x));
 			EnsureHasAtLeastOneArea();
-			needToUpdatePrioritized = true;
-			needToUpdateAddables = true;
+			MarkNeedToRecalculate();
+			MarkAddablesOutdated();
 		}
 
 		public void ReorderPriorities(int from, int to)
@@ -115,13 +115,7 @@ namespace CleaningPriority
 			Area areaToReorder = priorityList[from];
 			priorityList.RemoveAt(from);
 			priorityList.Insert(Mathf.Max(0, (to < from) ? to : to - 1), areaToReorder);
-			needToUpdatePrioritized = true;
-		}
-
-		public void MarkAllForDraw()
-		{
-			if (needToUpdatePrioritized) priorityAreasDrawer.SetDirty();
-			priorityAreasDrawer.MarkForDraw();
+			MarkNeedToRecalculate();
 		}
 
 		public bool FilthIsInCleaningArea(Filth filth)
@@ -133,37 +127,28 @@ namespace CleaningPriority
 			return false;
 		}
 
-		public void OnFilthSpawned(Filth spawned)
-		{
-			needToUpdatePrioritized = true;
-		}
-
-		public void OnFilthDespawned(Filth despawned)
-		{
-			needToUpdatePrioritized = true;
-		}
-
-		public void OnAreaChange(IntVec3 cell, bool newVal, Area area)
-		{
-			needToUpdatePrioritized = true;
-		}
-
 		public void OnAreaDeleted(Area deletedArea)
 		{
 			priorityList.Remove(deletedArea);
 			EnsureHasAtLeastOneArea();
-			needToUpdatePrioritized = true;
-			needToUpdateAddables = true;
+			MarkAddablesOutdated();
+			MarkNeedToRecalculate();
 		}
 
-		public void OnAreaAdded()
+		public void MarkAddablesOutdated()
 		{
 			needToUpdateAddables = true;
 		}
 
-		public void MarkNeedToUpdate()
+		public void MarkNeedToRecalculate()
 		{
 			needToUpdatePrioritized = true;
+		}
+
+		public void MarkAllForDraw()
+		{
+			if (needToUpdatePrioritized) priorityAreasDrawer.SetDirty();
+			priorityAreasDrawer.MarkForDraw();
 		}
 
 		public bool GetCellBool(int index)

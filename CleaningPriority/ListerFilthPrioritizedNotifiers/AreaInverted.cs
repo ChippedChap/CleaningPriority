@@ -14,7 +14,7 @@ namespace CleaningPriority.ListerFilthPrioritizedNotifiers
 			{
 				lister.OnAreaChange(cell, !__instance[cell], __instance);
 			}
-			__instance.Map.GetCleaningManager().MarkNeedToUpdate();
+			__instance.Map.GetCleaningManager().MarkNeedToRecalculate();
 		}
 	}
 }
