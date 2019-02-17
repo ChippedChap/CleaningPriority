@@ -70,6 +70,7 @@ namespace CleaningPriority
 		public void OnAreaChange(IntVec3 cell, bool newVal, Area area)
 		{
 			if (!area[cell]) return;
+			EnsureAreaHasKey(area);
 			List<Thing> thingsInCell = cell.GetThingList(map);
 			if (newVal)
 			{
